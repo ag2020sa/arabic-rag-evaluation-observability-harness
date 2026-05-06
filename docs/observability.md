@@ -2,18 +2,20 @@
 
 ## Signals
 
-The harness captures:
+The harness currently provides lightweight local observability suitable for a portfolio MVP and CI demo. It captures:
 
 - Structured logs
-- Trace spans
+- Local trace span start/end events
 - Query/session IDs
-- Latency breakdown
+- Per-case latency
 - Token usage
 - Cost estimate
 - Retrieval diagnostics
 - Error categories
 - Hallucination/groundedness flags
 - User feedback events
+
+It does not currently provide full production distributed tracing by itself. The repository includes OpenTelemetry collector configuration and Prometheus-compatible metric helpers, but exporting complete end-to-end traces requires wiring the running service to an OpenTelemetry backend and instrumenting the real RAG system under test.
 
 ## Key trace attributes
 
@@ -43,7 +45,7 @@ The harness captures:
 
 ## Production extension
 
-- Export traces to OpenTelemetry collector.
-- Add Prometheus metrics endpoint.
+- Export application spans to the included OpenTelemetry collector.
+- Add a Prometheus metrics endpoint for the FastAPI service.
 - Build Grafana dashboard for latency, pass rate, failed gates, and safety incidents.
-- Store evaluation reports in SQLite/PostgreSQL and immutable object storage.
+- Store evaluation reports in SQLite/PostgreSQL and immutable object storage if certified auditability is required.

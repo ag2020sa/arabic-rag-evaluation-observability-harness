@@ -32,7 +32,7 @@ def save_run(path: str | Path, report: EvaluationRunReport) -> None:
     with sqlite3.connect(path) as conn:
         conn.execute(
             """
-            INSERT OR REPLACE INTO evaluation_runs
+            INSERT INTO evaluation_runs
             (run_id, created_at, adapter_name, model_name, prompt_version, retriever_version, passed, report_json)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,

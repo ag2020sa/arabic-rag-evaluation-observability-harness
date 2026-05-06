@@ -30,21 +30,40 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
 
+      - name: Compile source and tests
+        run: python -m compileall -q src tests
+
       - name: Run unit tests
         run: pytest -q
 
+      - name: Run lint
+        run: make lint
+
       - name: Run Arabic RAG evaluation
-        run: |
-          python scripts/run_evaluation.py \
-            --dataset data/golden/arabic_hr_golden_set.jsonl \
-            --thresholds configs/thresholds.yaml \
-            --out reports/latest_evaluation_report.json
+        run: make evaluate
 
       - name: Generate release report
+        run: make report
+
+      - name: Validate Docker Compose config
+        run: docker compose config
+
+      - name: Smoke check API and dashboard assets
         run: |
-          python scripts/generate_report.py \
-            --report reports/latest_evaluation_report.json \
-            --out reports/latest_release_report.md
+          python - <<'PY'
+          from pathlib import Path
+
+          from fastapi.testclient import TestClient
+
+          from rag_eval_harness.api.main import app
+
+          response = TestClient(app).get("/health")
+          print(response.status_code, response.json())
+          if response.status_code != 200:
+              raise SystemExit("API health check failed.")
+          if not Path("dashboard/streamlit_app.py").exists():
+              raise SystemExit("Dashboard entrypoint is missing.")
+          PY
 
       - name: Enforce release gate
         run: |

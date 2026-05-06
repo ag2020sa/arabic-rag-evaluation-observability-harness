@@ -1,8 +1,20 @@
 # Arabic RAG Evaluation & Observability Harness
 
-مشروع بورتفوليو هندسي لتقييم ومراقبة وحوكمة إصدارات أنظمة RAG العربية، خصوصًا في البيئات السعودية المنظمة مثل الموارد البشرية، الامتثال، الأنظمة الداخلية، والأمن السيبراني.
+مشروع بورتفوليو هندسي وMVP عملي لتقييم ومراقبة خفيفة وحوكمة إصدارات أنظمة RAG العربية، خصوصًا في البيئات السعودية المنظمة مثل الموارد البشرية، الامتثال، الأنظمة الداخلية، والأمن السيبراني.
 
 هذا ليس chatbot demo. الفكرة الأساسية هي بناء harness يلتف حول أي نظام Arabic RAG موجود ويقيس جودة الاسترجاع، groundedness، صحة الاستشهادات، جودة العربية، السلامة، قابلية التدقيق، وجاهزية الإطلاق.
+
+## حالة المشروع
+
+هذا المشروع **Portfolio MVP / production-minded evaluation harness** وليس production deployment. الهدف هو إثبات مسار تقييم وحوكمة قابل للتشغيل محليًا وفي CI، وليس الادعاء بأنه نظام امتثال أو تدقيق معتمد.
+
+## حدود معروفة
+
+- LLM-as-Judge معطل افتراضيًا وموجود كـ placeholder إلى أن يتم ربطه بمزود فعلي.
+- تقييم generation يعتمد على rule-based/proxy metrics ما لم يتم تفعيل judge model حقيقي.
+- Citation validation يتحقق من source match وcoverage وmissing/unsupported citations وpage/span metadata عند توفرها، لكنه لا يثبت صحة قانونية مرجعية كاملة بدون source metadata موثوقة.
+- Observability خفيفة: structured logs وlocal spans وmetric helpers، وليست distributed tracing كامل إلا بعد ربط OpenTelemetry backend فعلي.
+- SQLite history مناسب للديمو والبورتفوليو ومبني كـ append-only حسب run_id، لكنه ليس immutable audit ledger معتمد.
 
 ## الروابط العامة
 
@@ -30,13 +42,13 @@
 ## ماذا يقيس المشروع؟
 
 - جودة الاسترجاع: Precision@k, Recall@k, MRR, nDCG, Hit Rate
-- جودة الإجابة: relevance, groundedness, completeness
-- صحة الاستشهادات: source match, coverage, span checks
+- جودة الإجابة: relevance, proxy groundedness, completeness
+- صحة الاستشهادات: source match, coverage, missing/unsupported citations, page/span checks عند توفر metadata
 - جودة العربية: normalization, readability, terminology consistency
 - السلامة: prompt injection, jailbreak, PII leakage, policy violations
 - المقارنة والانحدار: regression and release comparison
-- المراقبة: logs, traces, latency, token/cost, hallucination flags
-- الحوكمة: audit trail, registry, versioned reports, release gates
+- المراقبة: structured logs, lightweight spans, latency, token/cost, report diagnostics
+- الحوكمة: append-only run history, registry metadata, versioned reports, release gates
 
 ## التشغيل السريع
 
@@ -48,6 +60,8 @@ make failure-demo
 make lint
 make test
 ```
+
+يفضل استخدام أوامر `make` لأنها تنشئ/تستخدم `.venv` وتتجنب مشاكل system pip في بيئات Python التي تطبق PEP 668.
 
 ## قرارات الإطلاق
 
@@ -108,4 +122,4 @@ Dashboard: http://localhost:8501
 
 ## الخلاصة
 
-هذا المشروع يثبت القدرة على بناء طبقة تقييم وحوكمة إنتاجية حول Arabic RAG system: قياس الجودة، منع الإجابات غير المؤصلة، التحقق من الاستشهادات، تسجيل التدقيق، وتشغيل release gates واضحة قبل الترقية.
+هذا المشروع يثبت القدرة على بناء طبقة تقييم وحوكمة production-minded حول Arabic RAG system: قياس الجودة، تقليل الإجابات غير المؤصلة، التحقق من الاستشهادات حسب metadata المتاحة، تسجيل تاريخ تشغيل قابل للمراجعة، وتشغيل release gates واضحة قبل الترقية.

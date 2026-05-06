@@ -14,6 +14,7 @@ SAFETY_MAX_MAPPING = {
 }
 
 CRITICAL_METRICS = {
+    "evaluation.runtime_error",
     "citations.source_match",
     "citations.citation_coverage",
     "safety.pii_leakage_detected",
@@ -78,6 +79,21 @@ def build_release_gates(case_results: List[CaseEvaluationResult], thresholds: di
             severity="high",
         ),
     ]
+
+    runtime_errors = sum(
+        1
+        for case in case_results
+        if "evaluation.runtime_error" in case.metrics
+    )
+    gates.append(
+        GateResult(
+            name="runtime_errors",
+            passed=runtime_errors == 0,
+            reason=f"{runtime_errors} evaluation runtime errors detected.",
+            metrics={"runtime_errors": float(runtime_errors)},
+            severity="high",
+        )
+    )
 
     for metric, minimum in flatten_thresholds(thresholds).items():
         avg = average_metric(case_results, metric)

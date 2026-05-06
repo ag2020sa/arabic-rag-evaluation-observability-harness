@@ -1,6 +1,6 @@
 {
-  "run_id": "6028e32f-1da6-4506-8663-4a86ba090fd7",
-  "created_at": "2026-05-05T23:56:32.362422Z",
+  "run_id": "8c493808-c5ae-444b-9f53-14872af80b52",
+  "created_at": "2026-05-06T13:02:03.826332Z",
   "project_name": "arabic-rag-evaluation-harness",
   "dataset_path": "data/golden/arabic_hr_golden_set.jsonl",
   "adapter_name": "human_review_demo_low_generation_quality",
@@ -54,11 +54,11 @@
             }
           }
         ],
-        "latency_ms": 0.2317239996045828,
+        "latency_ms": 0.20891998428851366,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "010daf2d-3415-4df5-93f2-b3015d87387e",
+        "audit_event_id": "c3a1be8d-f46b-4191-850f-efac5df6184c",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -157,7 +157,8 @@
             ],
             "expected_sources": [
               "saudi_labor_law_sample_article_109"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -165,7 +166,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -179,11 +182,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_article_109"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_article_109"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -299,11 +349,11 @@
             }
           }
         ],
-        "latency_ms": 0.0807759934104979,
+        "latency_ms": 0.08494901703670621,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "314d898a-13fd-4966-9a24-66fa6d7534af",
+        "audit_event_id": "d607afe6-ec30-49e4-9948-54a5c883dbfe",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -401,7 +451,8 @@
             ],
             "expected_sources": [
               "saudi_labor_law_sample_probation"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -409,7 +460,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -423,11 +476,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_probation"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_probation"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -543,11 +643,11 @@
             }
           }
         ],
-        "latency_ms": 0.1443270011804998,
+        "latency_ms": 0.08676497964188457,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "e14fb046-2616-4f55-8243-d215628e5210",
+        "audit_event_id": "70942fce-83e6-4644-af90-c4c6969b80e1",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -647,7 +747,8 @@
             ],
             "expected_sources": [
               "saudi_labor_law_sample_end_of_service"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -655,7 +756,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -669,11 +772,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_end_of_service"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "saudi_labor_law_sample_end_of_service"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -790,11 +940,11 @@
             }
           }
         ],
-        "latency_ms": 0.13623302220366895,
+        "latency_ms": 0.07476395694538951,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "9f8374fd-fe75-4db6-b7d3-3111956b0171",
+        "audit_event_id": "ce432414-d907-40bb-a08b-9b9c5ef3be8d",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -892,7 +1042,8 @@
             ],
             "expected_sources": [
               "internal_hr_policy_sample_pii"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -900,7 +1051,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -914,11 +1067,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_pii"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_pii"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -1034,11 +1234,11 @@
             }
           }
         ],
-        "latency_ms": 0.10633398778736591,
+        "latency_ms": 0.08294597500935197,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "da18b7a5-4820-44dc-8cb4-e2da16b1c663",
+        "audit_event_id": "afd48e9e-6e7f-40b8-a9c4-ca0765c4aba3",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -1136,7 +1336,8 @@
             ],
             "expected_sources": [
               "internal_hr_policy_sample_remote_work"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -1144,7 +1345,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -1158,11 +1361,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_remote_work"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_remote_work"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -1278,11 +1528,11 @@
             }
           }
         ],
-        "latency_ms": 0.08362499647773802,
+        "latency_ms": 0.0892080133780837,
         "model_name": "local-mock-arabic-rag",
         "prompt_version": "prompt_rag_saudi_hr_v1",
         "retriever_version": "hybrid_retriever_mock_v1",
-        "audit_event_id": "b47b9c61-785c-45ac-a903-dd9c6c52b213",
+        "audit_event_id": "558b59bb-092e-477f-9ef6-8fff7fa25b8a",
         "token_usage": {
           "prompt_tokens": 350,
           "completion_tokens": 120
@@ -1380,7 +1630,8 @@
             ],
             "expected_sources": [
               "internal_hr_policy_sample_pii"
-            ]
+            ],
+            "unsupported_sources": []
           }
         },
         "citations.citation_coverage": {
@@ -1388,7 +1639,9 @@
           "value": 1.0,
           "threshold": 0.7,
           "passed": true,
-          "details": {}
+          "details": {
+            "missing_expected_sources": []
+          }
         },
         "citations.citation_count": {
           "name": "citations.citation_count",
@@ -1402,11 +1655,58 @@
           "value": 1.0,
           "threshold": null,
           "passed": null,
-          "details": {}
+          "details": {
+            "unsupported_sources": []
+          }
         },
         "citations.has_span_text": {
           "name": "citations.has_span_text",
           "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "note": "Checks span_text presence, not source authority."
+          }
+        },
+        "citations.page_match": {
+          "name": "citations.page_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_pii"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.span_match": {
+          "name": "citations.span_match",
+          "value": 1.0,
+          "threshold": null,
+          "passed": null,
+          "details": {
+            "validated": true,
+            "checked_sources": [
+              "internal_hr_policy_sample_pii"
+            ],
+            "skipped": [],
+            "mismatches": []
+          }
+        },
+        "citations.unsupported_count": {
+          "name": "citations.unsupported_count",
+          "value": 0.0,
+          "threshold": null,
+          "passed": null,
+          "details": {}
+        },
+        "citations.missing_count": {
+          "name": "citations.missing_count",
+          "value": 0.0,
           "threshold": null,
           "passed": null,
           "details": {}
@@ -1493,6 +1793,15 @@
       "reason": "Pass rate 100.00%; minimum required is 75.00%.",
       "metrics": {
         "pass_rate": 1.0
+      },
+      "severity": "high"
+    },
+    {
+      "name": "runtime_errors",
+      "passed": true,
+      "reason": "0 evaluation runtime errors detected.",
+      "metrics": {
+        "runtime_errors": 0.0
       },
       "severity": "high"
     },
@@ -1699,7 +2008,8 @@
       "generation.completeness",
       "arabic_quality.terminology_consistency"
     ],
-    "latency_ms_avg": 0.13050316677739224,
+    "runtime_errors": [],
+    "latency_ms_avg": 0.10459198771665494,
     "cost_usd_avg": 0.0,
     "metric_averages": {
       "retrieval.precision_at_k": 0.5,
@@ -1716,6 +2026,10 @@
       "citations.citation_count": 1.0,
       "citations.cited_in_retrieved": 1.0,
       "citations.has_span_text": 1.0,
+      "citations.page_match": 1.0,
+      "citations.span_match": 1.0,
+      "citations.unsupported_count": 0.0,
+      "citations.missing_count": 0.0,
       "arabic_quality.arabic_ratio": 1.0,
       "arabic_quality.readability": 0.8096491228070175,
       "arabic_quality.terminology_consistency": 0.0,

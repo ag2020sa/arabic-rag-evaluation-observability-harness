@@ -1,7 +1,7 @@
 # Arabic RAG Evaluation Release Report
 
-**Run ID:** `12d38156-38cf-4595-a0d3-ba2585579a86`
-**Created at:** 2026-05-05T23:56:32.267295+00:00
+**Run ID:** `10c6a8c2-ab28-404a-98ad-58e58c37d328`
+**Created at:** 2026-05-06T13:02:06.534034+00:00
 **Dataset:** `data/golden/arabic_hr_golden_set.jsonl`
 **Adapter:** `local_mock`
 **Model:** `local-mock-arabic-rag`
@@ -23,7 +23,8 @@
     "generation.answer_relevance",
     "generation.groundedness"
   ],
-  "latency_ms_avg": 0.12584017046416798,
+  "runtime_errors": [],
+  "latency_ms_avg": 0.06064899692622324,
   "cost_usd_avg": 0.0,
   "metric_averages": {
     "retrieval.precision_at_k": 0.5,
@@ -40,6 +41,10 @@
     "citations.citation_count": 1.0,
     "citations.cited_in_retrieved": 1.0,
     "citations.has_span_text": 1.0,
+    "citations.page_match": 1.0,
+    "citations.span_match": 1.0,
+    "citations.unsupported_count": 0.0,
+    "citations.missing_count": 0.0,
     "arabic_quality.arabic_ratio": 1.0,
     "arabic_quality.readability": 0.8496777267304227,
     "arabic_quality.terminology_consistency": 1.0,

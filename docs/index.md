@@ -1,6 +1,6 @@
 # Arabic RAG Evaluation & Observability Harness
 
-Enterprise-grade quality evaluation, tracing, auditability, and release gates for Arabic RAG systems.
+Production-minded portfolio MVP for Arabic RAG evaluation, lightweight observability, audit history, and release gates.
 
 ## Portfolio Links
 
@@ -13,13 +13,13 @@ Enterprise-grade quality evaluation, tracing, auditability, and release gates fo
 
 ## What This Project Proves
 
-This is not a generic chatbot demo. It is an Arabic RAG evaluation, observability, audit, and release-governance harness that can wrap an existing enterprise RAG backend and make release decisions explicit.
+This is not a generic chatbot demo. It is an Arabic RAG evaluation, lightweight observability, audit-history, and release-governance harness that can wrap an existing RAG backend and make release decisions explicit.
 
 The harness evaluates:
 
 - retrieval quality
-- generation relevance and groundedness
-- citation accuracy and span coverage
+- generation relevance and proxy groundedness
+- citation accuracy, missing/unsupported citations, and span/page checks when metadata is available
 - Arabic answer quality and normalization
 - safety risks including prompt injection, jailbreaks, PII leakage, and policy violations
 - regression and release readiness

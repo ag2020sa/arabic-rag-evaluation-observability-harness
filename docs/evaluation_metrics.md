@@ -42,6 +42,12 @@ Checks whether all expected source IDs are covered by citations.
 ### Cited-in-retrieved
 Ensures cited sources came from retrieved chunks rather than fabricated citations.
 
+### Page and span checks
+When citation and retrieved chunk metadata include page or span fields, the harness checks page consistency and whether cited span text or character offsets can be matched to the retrieved chunk text. If metadata is missing, the report marks that part as not validated instead of pretending authoritative verification was possible.
+
+### Missing and unsupported citations
+The report includes counts and details for expected sources that were not cited and cited sources that were not present in retrieved chunks.
+
 ## Arabic quality metrics
 
 ### Arabic ratio

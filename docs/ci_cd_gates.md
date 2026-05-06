@@ -27,8 +27,8 @@ This repository includes `.github/workflows/evaluation.yml`, which runs on pull 
 
 ## Release outcomes
 
-### Promote to staging/production
-All major gates pass.
+### Promote to staging
+All major gates pass for the candidate demo/release path.
 
 ### Human review required
 Non-critical gates fail or quality degradation is small but explainable.

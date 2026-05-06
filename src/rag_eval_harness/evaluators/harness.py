@@ -11,7 +11,7 @@ from rag_eval_harness.evaluators.rules import evaluate_with_rules
 from rag_eval_harness.gates.quality_gates import apply_case_thresholds, build_release_gates, case_passed, release_decision
 from rag_eval_harness.gates.thresholds import load_thresholds
 from rag_eval_harness.observability.tracing import TraceSpan
-from rag_eval_harness.schemas import CaseEvaluationResult, EvaluationRunReport, RagRequest
+from rag_eval_harness.schemas import CaseEvaluationResult, EvaluationRunReport, MetricResult, RagRequest, RagResponse
 
 
 async def evaluate_dataset_async(
@@ -28,25 +28,28 @@ async def evaluate_dataset_async(
     for example in examples:
         request = RagRequest(query=example.query, metadata={"case_id": example.id, **example.metadata})
         with TraceSpan("evaluate_case", attributes={"case_id": example.id, "category": example.category}):
-            response = await adapter.ask(request)
-            metrics = evaluate_with_rules(example, request, response)
-            if include_llm_judge:
-                metrics.update(await judge.evaluate(example, response))
-            metrics = apply_case_thresholds(metrics, thresholds)
-            passed, critical_failures, warnings = case_passed(metrics)
-            case_results.append(
-                CaseEvaluationResult(
-                    case_id=example.id,
-                    query=example.query,
-                    category=example.category,
-                    tags=example.tags,
-                    response=response,
-                    metrics=metrics,
-                    passed=passed,
-                    critical_failures=critical_failures,
-                    warnings=warnings,
+            try:
+                response = await adapter.ask(request)
+                metrics = evaluate_with_rules(example, request, response)
+                if include_llm_judge:
+                    metrics.update(await judge.evaluate(example, response))
+                metrics = apply_case_thresholds(metrics, thresholds)
+                passed, critical_failures, warnings = case_passed(metrics)
+                case_results.append(
+                    CaseEvaluationResult(
+                        case_id=example.id,
+                        query=example.query,
+                        category=example.category,
+                        tags=example.tags,
+                        response=response,
+                        metrics=metrics,
+                        passed=passed,
+                        critical_failures=critical_failures,
+                        warnings=warnings,
+                    )
                 )
-            )
+            except Exception as exc:
+                case_results.append(build_error_case_result(example, request, exc))
 
     gates = build_release_gates(case_results, thresholds)
     decision = release_decision(gates)
@@ -88,6 +91,11 @@ def build_summary(case_results: list[CaseEvaluationResult], gates: list) -> dict
         "failed_gates": [g.name for g in gates if not g.passed],
         "critical_failures": [f for c in case_results for f in c.critical_failures],
         "warnings": [w for c in case_results for w in c.warnings],
+        "runtime_errors": [
+            c.metrics["evaluation.runtime_error"].details
+            for c in case_results
+            if "evaluation.runtime_error" in c.metrics
+        ],
         "latency_ms_avg": mean(latencies) if latencies else 0.0,
         "cost_usd_avg": mean(costs) if costs else 0.0,
         "metric_averages": averages,
@@ -96,3 +104,47 @@ def build_summary(case_results: list[CaseEvaluationResult], gates: list) -> dict
 
 def evaluate_dataset(adapter: RAGAdapter, dataset_path: str, thresholds_path: str, include_llm_judge: bool = False) -> EvaluationRunReport:
     return asyncio.run(evaluate_dataset_async(adapter, dataset_path, thresholds_path, include_llm_judge))
+
+
+def build_error_case_result(example, request: RagRequest, exc: Exception) -> CaseEvaluationResult:
+    error_type = type(exc).__name__
+    error_message = str(exc) or error_type
+    response = RagResponse(
+        answer="",
+        citations=[],
+        retrieved_chunks=[],
+        latency_ms=0.0,
+        model_name="unknown",
+        prompt_version="unknown",
+        retriever_version="unknown",
+        raw={
+            "error": {
+                "case_id": example.id,
+                "error_type": error_type,
+                "message": error_message,
+            }
+        },
+    )
+    metrics = {
+        "evaluation.runtime_error": MetricResult(
+            name="evaluation.runtime_error",
+            value=1.0,
+            passed=False,
+            details={
+                "case_id": example.id,
+                "error_type": error_type,
+                "message": error_message,
+            },
+        )
+    }
+    return CaseEvaluationResult(
+        case_id=example.id,
+        query=request.query,
+        category=example.category,
+        tags=example.tags,
+        response=response,
+        metrics=metrics,
+        passed=False,
+        critical_failures=["evaluation.runtime_error"],
+        warnings=[],
+    )
