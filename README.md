@@ -1,5 +1,10 @@
 # Arabic RAG Evaluation & Observability Harness
 
+[![Arabic RAG Evaluation Gates](https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness/actions/workflows/evaluation.yml/badge.svg)](https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness/actions/workflows/evaluation.yml)
+[![Release](https://img.shields.io/github/v/release/ag2020sa/arabic-rag-evaluation-observability-harness)](https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness/releases/tag/v1.0.0)
+[![GitHub Pages](https://img.shields.io/badge/portfolio-GitHub%20Pages-blue)](https://ag2020sa.github.io/arabic-rag-evaluation-observability-harness/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+
 Enterprise-grade quality evaluation, tracing, auditability, and release gates for Arabic RAG systems.
 
 This repository is a complete portfolio-ready implementation blueprint and MVP codebase for evaluating Arabic-first Retrieval-Augmented Generation systems in regulated Saudi enterprise use cases such as HR, labor-law, compliance, cybersecurity governance, and internal knowledge assistants.
