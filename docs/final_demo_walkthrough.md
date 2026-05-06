@@ -99,6 +99,8 @@ Show:
 - quality gates
 - metric averages
 - case-level warnings and failures
+- audit history
+- observability metrics for latency, token usage, and cost
 
 ## 6. Explain The Engineering Value
 
