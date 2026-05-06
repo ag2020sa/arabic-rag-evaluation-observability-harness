@@ -69,15 +69,11 @@ Portfolio evidence reports:
 - `reports/human_review_evaluation_report.json`
 - `reports/failure_evaluation_report.json`
 
-## GitHub Upload Notes
+## GitHub Repository
 
-This folder is not currently initialized as a Git repository. Before pushing to GitHub:
+Public repository:
 
-```bash
-git init
-git add .
-git commit -m "Finalize Arabic RAG evaluation portfolio demo"
-```
+`https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness`
 
 Do not commit local runtime artifacts:
 
