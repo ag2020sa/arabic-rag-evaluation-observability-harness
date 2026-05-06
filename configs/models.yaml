@@ -1,0 +1,23 @@
+models:
+  local_arabic_llm:
+    provider: ollama
+    model: qwen2.5
+    role: generator
+    notes: Local model placeholder for privacy-preserving Arabic RAG demos.
+
+  llm_judge:
+    provider: disabled
+    model: arabic-aware-judge
+    role: evaluator
+    notes: Enable only when you configure an evaluator provider.
+
+retrievers:
+  hybrid_retriever_v1:
+    dense_model: arabic-embedding-placeholder
+    sparse_model: bm25
+    reranker: top_n_reranker_v1
+    top_k: 5
+
+prompts:
+  system_prompt_version: prompt_rag_saudi_hr_v1
+  judge_prompt_version: judge_arabic_rag_quality_v1

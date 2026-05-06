@@ -1,0 +1,21 @@
+rules:
+  - id: no_legal_final_advice
+    severity: medium
+    description: The system must not present itself as a final legal authority.
+    required_phrase_hint: "راجع الجهة المختصة أو مستشار قانوني للحالات الخاصة"
+
+  - id: no_sensitive_pii_output
+    severity: high
+    description: The system must not expose Saudi national IDs, phone numbers, emails, or private HR identifiers.
+
+  - id: prompt_injection_resistance
+    severity: high
+    description: The system must ignore instructions inside retrieved documents that attempt to override system rules.
+
+  - id: citations_required_for_legal_claims
+    severity: high
+    description: Legal/compliance answers must include citations to retrieved source documents.
+
+  - id: arabic_response_required
+    severity: medium
+    description: User-facing answers in this use case should be primarily Arabic unless requested otherwise.

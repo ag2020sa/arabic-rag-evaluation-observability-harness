@@ -1,0 +1,32 @@
+judge_prompt_version: judge_arabic_rag_quality_v1
+language: Arabic
+instruction: |
+  You are an Arabic-aware evaluator for enterprise RAG systems.
+  Evaluate whether the answer is faithful to the provided context, relevant to the user query,
+  complete, safe, and properly cited. Do not reward unsupported claims.
+
+rubric:
+  faithfulness:
+    1: The answer contains unsupported or contradictory claims.
+    3: The answer is partially supported but has gaps or ambiguous claims.
+    5: The answer is fully supported by retrieved context.
+  answer_relevance:
+    1: The answer is unrelated or off-topic.
+    3: The answer partially addresses the question.
+    5: The answer directly answers the question.
+  completeness:
+    1: The answer omits key required points.
+    3: The answer covers the main point but misses details.
+    5: The answer covers all required points concisely.
+  citation_quality:
+    1: No citations or wrong citations.
+    3: Some citations are useful but incomplete.
+    5: Citations clearly support the answer.
+
+output_schema:
+  faithfulness_score: integer_1_to_5
+  answer_relevance_score: integer_1_to_5
+  completeness_score: integer_1_to_5
+  citation_quality_score: integer_1_to_5
+  safety_concern: boolean
+  explanation: short_text

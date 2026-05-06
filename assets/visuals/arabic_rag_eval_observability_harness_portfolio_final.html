@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Arabic RAG Evaluation & Observability Harness</title>
+<style>
+  :root{
+    --bg:#f8fafc; --panel:#ffffff; --navy:#071a3d; --muted:#64748b; --text:#1e293b;
+    --blue:#2563eb; --blue-2:#1d4ed8; --blue-soft:#eff6ff; --blue-line:#93c5fd;
+    --teal:#0f766e; --teal-soft:#ecfeff; --teal-line:#67e8f9;
+    --purple:#6d28d9; --purple-soft:#f5f3ff; --purple-line:#c4b5fd;
+    --green:#059669; --green-soft:#ecfdf5; --red:#dc2626; --red-soft:#fef2f2;
+    --orange:#d97706; --orange-soft:#fff7ed; --gold:#b45309; --gold-soft:#fffbeb;
+    --border:#cbd5e1; --shadow: 0 14px 36px rgba(15,23,42,.10), 0 2px 6px rgba(15,23,42,.06);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#e2e8f0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;color:var(--text)}
+  .canvas{position:relative;width:3000px;height:1688px;margin:0 auto;background:var(--bg);overflow:hidden;}
+  .canvas:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%, rgba(37,99,235,.08), transparent 28%), radial-gradient(circle at 85% 20%, rgba(20,184,166,.06), transparent 24%);}
+  h1{position:absolute;top:18px;left:0;width:100%;margin:0;text-align:center;font-size:64px;line-height:1.04;color:var(--navy);font-weight:850;letter-spacing:-1.2px;}
+  .subtitle{position:absolute;top:88px;left:0;width:100%;text-align:center;color:#334155;font-size:25px;font-weight:500;}
+  .panel{position:absolute;background:rgba(255,255,255,.96);border:3px solid var(--border);border-radius:24px;box-shadow:var(--shadow);z-index:2;overflow:hidden;}
+  .panel-inner{position:absolute;inset:0;padding:30px;}
+  .title-row{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .section-title{font-size:34px;font-weight:800;letter-spacing:-.4px;line-height:1.05;margin:0;}
+  .badge{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:44px;border-radius:999px;font-weight:850;font-size:17px;letter-spacing:.2px;flex:0 0 auto;}
+  .badge.blue{background:#dbeafe;color:var(--blue)} .badge.teal{background:#ccfbf1;color:var(--teal)} .badge.purple{background:#ede9fe;color:var(--purple)} .badge.gold{background:#fef3c7;color:var(--gold)}
+  .stakeholders{left:430px;top:135px;width:1260px;height:95px;border-color:var(--blue-line);}
+  .stake-label{position:absolute;top:-28px;left:0;width:100%;text-align:center;color:var(--blue);font-size:22px;font-weight:850;}
+  .stake-grid{display:grid;grid-template-columns:repeat(5,1fr);height:100%;align-items:center;padding:10px 28px;}
+  .stake{display:flex;align-items:center;justify-content:center;gap:12px;border-left:2px solid #cbd5e1;height:64px;}
+  .stake:first-child{border-left:0}.stake .badge{width:44px}.stake b{display:block;font-size:18px;color:var(--navy);line-height:1.05;text-align:left}
+  .inputs{left:50px;top:275px;width:340px;height:745px;border-color:var(--blue)}
+  .inputs .panel-inner{padding:28px 22px}.inputs .section-title{font-size:30px;color:var(--blue)}
+  .input-list{display:grid;gap:13px}.input-card{height:64px;border:2px solid var(--blue-line);background:var(--blue-soft);border-radius:14px;display:flex;align-items:center;gap:12px;padding:0 13px;font-size:17px;font-weight:800;color:var(--navy);line-height:1.08}.input-card.good{border-color:#34d399;background:var(--green-soft)}.mini{width:38px;height:38px;border-radius:999px;background:#dbeafe;color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:850;font-size:13px;flex:0 0 auto}.good .mini{background:#d1fae5;color:var(--green)}
+  .rag{left:430px;top:275px;width:1220px;height:575px;border-color:var(--blue)}
+  .rag .section-title{color:var(--blue)}.pipeline{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;margin-top:4px}.stage{height:275px;border:2px solid var(--blue-line);border-radius:16px;background:linear-gradient(#fff,#f8fbff);padding:14px 8px;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center}.num{width:34px;height:34px;border-radius:999px;background:var(--blue);color:#fff;font-weight:900;font-size:17px;display:flex;align-items:center;justify-content:center;margin-bottom:7px}.stage-title{font-size:16px;line-height:1.08;font-weight:850;color:var(--navy);min-height:44px}.stage-icon{width:50px;height:50px;border-radius:999px;background:#dbeafe;color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;margin:12px 0 9px;border:2px solid var(--blue-line)}.stage-desc{font-size:13px;line-height:1.25;color:#475569;font-weight:600}.ground-line{position:absolute;left:40px;right:40px;bottom:95px;height:0;border-bottom:3px dashed var(--blue)}.ground-markers{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;margin:10px 0 0}.marker-dot{height:24px;display:flex;justify-content:center}.marker-dot span{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:999px;background:var(--blue);color:#fff;font-size:13px;font-weight:900}.ground-bar{margin:19px auto 0;width:76%;height:48px;border:2px solid var(--blue);background:var(--blue-soft);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--blue);font-size:21px;font-weight:850}.probes{position:absolute;left:415px;bottom:26px;width:520px;height:72px;border:3px dashed var(--navy);border-radius:16px;background:#fff;display:flex;align-items:center;gap:16px;padding:0 20px}.probes .mini{background:#dbeafe}.probes b{font-size:19px;color:var(--navy);display:block}.probes span{font-size:14px;color:#475569;font-weight:600;display:block;margin-top:3px}
+  .eval{left:1690px;top:275px;width:670px;height:575px;border-color:var(--teal)}
+  .eval .section-title{color:var(--teal)}.eval-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.eval-card{height:153px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:16px;padding:14px 14px 10px}.card-head{display:flex;align-items:center;gap:9px;font-size:16px;line-height:1.05;font-weight:850;color:var(--navy);margin-bottom:8px}.card-head .mini{background:#ccfbf1;color:var(--teal);width:34px;height:34px;font-size:11px}.eval-card ul{margin:0;padding-left:17px;color:#334155;font-size:13.3px;line-height:1.28;font-weight:600}.validator{margin-top:14px;height:82px;border:2px solid var(--teal);border-radius:16px;background:#f0fdfa;display:flex;align-items:center;gap:16px;padding:0 22px}.validator b{font-size:20px;color:var(--teal);display:block}.validator span{font-size:15px;color:#475569;font-weight:600}
+  .cicd{left:2400px;top:275px;width:550px;height:745px;border-color:var(--purple)}
+  .cicd .section-title{color:var(--purple);font-size:30px}.flow-card{height:100px;border:2px solid var(--purple-line);background:var(--purple-soft);border-radius:18px;margin-bottom:20px;padding:16px 18px 14px 72px;position:relative}.flow-card .step{position:absolute;left:20px;top:28px;width:36px;height:36px;border-radius:999px;background:#e9d5ff;color:var(--purple);font-weight:900;display:flex;align-items:center;justify-content:center}.flow-card b{font-size:18px;line-height:1.12;color:var(--navy);display:block}.flow-card span{font-size:14px;color:#475569;font-weight:600;display:block;margin-top:6px}.outcomes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}.outcome{height:117px;border-radius:16px;border:2.5px solid;padding:10px 8px;text-align:center;font-weight:850}.outcome .sym{font-size:26px;line-height:1}.outcome b{display:block;font-size:16px;line-height:1.05;margin-top:5px}.outcome span{display:block;font-size:12px;color:#475569;margin-top:5px}.outcome.green{background:var(--green-soft);border-color:var(--green);color:var(--green)}.outcome.red{background:var(--red-soft);border-color:var(--red);color:var(--red)}.outcome.orange{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+  .obs{left:430px;top:900px;width:1220px;height:340px;border-color:var(--blue)}.obs .section-title{color:var(--blue)}.obs-grid{display:grid;grid-template-columns:repeat(9,1fr);gap:10px}.obs-card{height:205px;border:2px solid var(--blue-line);background:var(--blue-soft);border-radius:15px;text-align:center;padding:13px 8px}.obs-card .mini{margin:0 auto 9px;background:#dbeafe;color:var(--blue)}.obs-card b{font-size:15px;line-height:1.1;color:var(--navy);display:block;min-height:36px}.obs-card span{font-size:12.5px;line-height:1.25;color:#475569;font-weight:600;display:block;margin-top:8px}
+  .storage{left:1690px;top:900px;width:670px;height:340px;border-color:var(--teal)}.storage .section-title{color:var(--teal);font-size:31px}.store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.store-card{height:82px;border:2px solid var(--teal);background:var(--teal-soft);border-radius:15px;padding:10px 8px 8px 48px;position:relative}.store-card .mini{position:absolute;left:10px;top:12px;background:#ccfbf1;color:var(--teal);width:32px;height:32px;font-size:10px}.store-card b{font-size:13.5px;line-height:1.05;color:var(--navy);display:block}.store-card span{font-size:11.5px;color:#475569;display:block;margin-top:3px;font-weight:600}.storage .caption{position:absolute;left:0;bottom:18px;width:100%;text-align:center;color:var(--teal);font-weight:850;font-size:16px}
+  .feedback{left:570px;top:1272px;width:1300px;height:82px;border:3px dashed var(--blue);border-radius:20px;background:#fff;display:flex;align-items:center;gap:18px;padding:0 28px}.feedback .loop{width:52px;height:52px;border-radius:999px;background:#dbeafe;color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:900}.feedback b{color:var(--blue);font-size:23px;display:block}.feedback span{font-size:16px;color:#475569;font-weight:650}.legend{left:50px;top:1380px;width:340px;height:168px;border-color:var(--border)}.legend .panel-inner{padding:20px 24px}.legend b{font-size:18px;color:var(--navy)}.legend-row{display:flex;align-items:center;gap:14px;margin-top:10px;font-size:13.2px;color:#475569;font-weight:700}.line{width:80px;height:0;border-top:4px solid var(--blue);position:relative}.line:after{content:"";position:absolute;right:-2px;top:-10px;border-left:18px solid var(--blue);border-top:10px solid transparent;border-bottom:10px solid transparent}.line.dashed{border-top-style:dashed}.line.purple{border-color:var(--purple)}.line.purple:after{border-left-color:var(--purple)}.line.navy{border-color:var(--navy)}.line.navy:after{border-left-color:var(--navy)}
+  .governance{left:430px;top:1380px;width:1200px;height:168px;border-color:var(--orange);background:var(--gold-soft)}.governance .panel-inner{padding:18px 20px}.governance .g-title{text-align:center;color:var(--gold);font-size:22px;font-weight:850;margin-bottom:18px}.gov-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0}.gov{border-left:2px solid #fed7aa;padding:0 10px 0 48px;position:relative;min-height:62px}.gov:first-child{border-left:0}.gov .mini{position:absolute;left:8px;top:10px;background:#fef3c7;color:var(--orange);width:34px;height:34px}.gov b{font-size:15.5px;color:var(--navy);display:block;line-height:1.05}.gov span{font-size:11.5px;color:#475569;font-weight:650;line-height:1.15;display:block;margin-top:4px}
+  .why{left:1690px;top:1380px;width:1060px;height:168px;border-color:var(--orange);background:var(--gold-soft)}.why .panel-inner{padding:17px 22px}.why .w-title{text-align:center;color:var(--gold);font-size:24px;font-weight:850;margin-bottom:20px}.why-grid{display:grid;grid-template-columns:repeat(5,1fr)}.why-card{border-left:2px solid #fed7aa;min-height:58px;text-align:center}.why-card:first-child{border-left:0}.why-card .mini{margin:0 auto 6px;background:#fef3c7;color:var(--gold);width:38px;height:38px}.why-card b{font-size:16px;color:var(--navy);line-height:1.08;display:block}.footer{position:absolute;bottom:16px;left:0;width:100%;text-align:center;color:#64748b;font-size:14px;font-weight:600;z-index:3}.arrows{position:absolute;inset:0;width:3000px;height:1688px;z-index:1;pointer-events:none}.arrows .blue{stroke:var(--blue);}.arrows .teal{stroke:var(--teal);}.arrows .purple{stroke:var(--purple);}.arrows .navy{stroke:var(--navy);}.arrows .dashed{stroke-dasharray:12 10;}.arrows line,.arrows path{stroke-width:5;fill:none;stroke-linecap:round;stroke-linejoin:round}.arrows .thin{stroke-width:3.2}.tiny-note{font-size:11px;color:#64748b;font-weight:650}
+</style>
+</head>
+<body>
+<div class="canvas">
+  <h1>Arabic RAG Evaluation &amp; Observability Harness</h1>
+  <div class="subtitle">Enterprise-grade quality evaluation, tracing, and release gates for Arabic RAG systems</div>
+
+  <svg class="arrows" viewBox="0 0 3000 1688" preserveAspectRatio="none">
+    <defs>
+      <marker id="arrowBlue" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 Z" fill="#2563eb"/></marker>
+      <marker id="arrowTeal" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 Z" fill="#0f766e"/></marker>
+      <marker id="arrowPurple" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 Z" fill="#6d28d9"/></marker>
+      <marker id="arrowNavy" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L12,6 L0,12 Z" fill="#071a3d"/></marker>
+    </defs>
+    <line class="blue" x1="390" y1="640" x2="430" y2="640" marker-end="url(#arrowBlue)"/>
+    <line class="teal" x1="1650" y1="580" x2="1690" y2="580" marker-end="url(#arrowTeal)"/>
+    <line class="purple" x1="2360" y1="580" x2="2400" y2="580" marker-end="url(#arrowPurple)"/>
+    <path class="navy dashed thin" d="M1690 180 H2650 V275" marker-end="url(#arrowNavy)"/>
+    <path class="blue dashed thin" d="M1040 842 V900" marker-end="url(#arrowBlue)"/>
+    <path class="teal" d="M2025 850 V900" marker-end="url(#arrowTeal)"/>
+    <line class="teal" x1="1650" y1="1070" x2="1690" y2="1070" marker-end="url(#arrowTeal)"/>
+    <path class="purple thin" d="M2360 1010 H2380 V670 H2400" marker-end="url(#arrowPurple)"/>
+    <path class="blue dashed thin" d="M1600 1240 V1272 H1870" marker-end="url(#arrowBlue)"/>
+    <path class="blue dashed thin" d="M570 1313 H80 V1025" marker-end="url(#arrowBlue)"/>
+  </svg>
+
+  <div class="panel stakeholders">
+    <div class="stake-label">Stakeholders</div>
+    <div class="stake-grid">
+      <div class="stake"><span class="badge blue">AI</span><b>AI Engineer</b></div>
+      <div class="stake"><span class="badge teal">QA</span><b>QA Engineer</b></div>
+      <div class="stake"><span class="badge purple">PO</span><b>Product Owner</b></div>
+      <div class="stake"><span class="badge teal">SC</span><b>Security &amp;<br>Compliance</b></div>
+      <div class="stake"><span class="badge blue">DS</span><b>Data Scientist</b></div>
+    </div>
+  </div>
+
+  <section class="panel inputs"><div class="panel-inner">
+    <div class="title-row"><span class="badge blue">DB</span><h2 class="section-title">Inputs &amp; Test Assets</h2></div>
+    <div class="input-list">
+      <div class="input-card"><span class="mini">DS</span>Arabic Golden Dataset</div>
+      <div class="input-card"><span class="mini">RP</span>Production Replay Samples</div>
+      <div class="input-card"><span class="mini">SG</span>Synthetic Edge Cases</div>
+      <div class="input-card good"><span class="mini">GT</span>Ground Truth Answers</div>
+      <div class="input-card"><span class="mini">SR</span>Policy &amp; Safety Rules</div>
+      <div class="input-card"><span class="mini">VM</span>Prompt / Model / Retriever Versions</div>
+      <div class="input-card"><span class="mini">SP</span>Source Corpus + Span Map</div>
+      <div class="input-card"><span class="mini">UF</span>User Feedback Events</div>
+    </div>
+  </div></section>
+
+  <section class="panel rag"><div class="panel-inner">
+    <div class="title-row"><span class="badge blue">⚙</span><h2 class="section-title">RAG System Under Test</h2></div>
+    <div class="pipeline">
+      <div class="stage"><div class="num">1</div><div class="stage-title">User<br>Query</div><div class="stage-icon">Q</div><div class="stage-desc">Arabic question</div></div>
+      <div class="stage"><div class="num">2</div><div class="stage-title">Arabic Preprocessing<br>&amp; Normalization</div><div class="stage-icon">AR</div><div class="stage-desc">normalize spelling + text</div></div>
+      <div class="stage"><div class="num">3</div><div class="stage-title">Prompt<br>Builder</div><div class="stage-icon">P</div><div class="stage-desc">system + rules</div></div>
+      <div class="stage"><div class="num">4</div><div class="stage-title">Embedding<br>Model</div><div class="stage-icon">E</div><div class="stage-desc">Arabic vectorization</div></div>
+      <div class="stage"><div class="num">5</div><div class="stage-title">Hybrid<br>Retriever</div><div class="stage-icon">H</div><div class="stage-desc">BM25 + dense search</div></div>
+      <div class="stage"><div class="num">6</div><div class="stage-title">Reranker</div><div class="stage-icon">R</div><div class="stage-desc">top-k relevance</div></div>
+      <div class="stage"><div class="num">7</div><div class="stage-title">Vector<br>DB</div><div class="stage-icon">V</div><div class="stage-desc">ANN index</div></div>
+      <div class="stage"><div class="num">8</div><div class="stage-title">Document<br>Store</div><div class="stage-icon">D</div><div class="stage-desc">chunks + metadata</div></div>
+      <div class="stage"><div class="num">9</div><div class="stage-title">LLM<br>Inference</div><div class="stage-icon">LLM</div><div class="stage-desc">Arabic answer</div></div>
+      <div class="stage"><div class="num">10</div><div class="stage-title">Answer with<br>Citations</div><div class="stage-icon">C</div><div class="stage-desc">sources + spans</div></div>
+    </div>
+    <div class="ground-line"></div>
+    <div class="ground-markers"><div class="marker-dot"><span>1</span></div><div class="marker-dot"><span>2</span></div><div class="marker-dot"><span>3</span></div><div class="marker-dot"><span>4</span></div><div class="marker-dot"><span>5</span></div><div class="marker-dot"><span>6</span></div><div class="marker-dot"><span>7</span></div><div class="marker-dot"><span>8</span></div><div class="marker-dot"><span>9</span></div><div class="marker-dot"><span>10</span></div></div>
+    <div class="ground-bar">Source Grounding Across the Pipeline</div>
+    <div class="probes"><span class="mini">OBS</span><div><b>Instrumentation &amp; Probes</b><span>Capture requests, retrieved chunks, model outputs, citations, metadata</span></div></div>
+  </div></section>
+
+  <section class="panel eval"><div class="panel-inner">
+    <div class="title-row"><span class="badge teal">EV</span><h2 class="section-title">Evaluation Harness</h2></div>
+    <div class="eval-grid">
+      <div class="eval-card"><div class="card-head"><span class="mini">RET</span>Retrieval Evaluation</div><ul><li>Context precision</li><li>Context recall</li><li>MRR / nDCG</li><li>Hit rate</li></ul></div>
+      <div class="eval-card"><div class="card-head"><span class="mini">GEN</span>Generation Evaluation</div><ul><li>Faithfulness</li><li>Answer relevance</li><li>Groundedness</li><li>Completeness</li></ul></div>
+      <div class="eval-card"><div class="card-head"><span class="mini">CIT</span>Citation Validation</div><ul><li>Source match</li><li>Page / span check</li><li>Coverage score</li><li>Broken citations</li></ul></div>
+      <div class="eval-card"><div class="card-head"><span class="mini">AR</span>Arabic Quality</div><ul><li>Fluency + readability</li><li>Saudi terminology</li><li>Dialect robustness</li><li>Script handling</li></ul></div>
+      <div class="eval-card"><div class="card-head"><span class="mini">SEC</span>Safety &amp; Security</div><ul><li>Prompt injection</li><li>PII leakage</li><li>Jailbreak checks</li><li>Policy violations</li></ul></div>
+      <div class="eval-card"><div class="card-head"><span class="mini">REG</span>Regression &amp; Comparison</div><ul><li>Baseline deltas</li><li>Prompt comparison</li><li>Model comparison</li><li>Retriever comparison</li></ul></div>
+    </div>
+    <div class="validator"><span class="badge teal">JDG</span><div><b>LLM-as-Judge + Rule-Based Validators</b><span>Arabic-aware rubrics • deterministic checks • calibrated human review</span></div></div>
+  </div></section>
+
+  <section class="panel cicd"><div class="panel-inner">
+    <div class="title-row"><span class="badge purple">CD</span><h2 class="section-title">CI/CD &amp; Decision Gates</h2></div>
+    <div class="flow-card"><span class="step">1</span><b>Pull Request / Nightly Run / Release Candidate</b><span>Code, config, prompts, models, retrievers</span></div>
+    <div class="flow-card"><span class="step">2</span><b>Automated Evaluation</b><span>Run full suite on golden + replay datasets</span></div>
+    <div class="flow-card"><span class="step">3</span><b>Quality Gates</b><span>Retrieval floor • citation pass • safety pass • latency/cost budget</span></div>
+    <div class="flow-card"><span class="step">4</span><b>Release Report</b><span>Scores, failures, deltas, owner-ready summary</span></div>
+    <div class="outcomes"><div class="outcome green"><div class="sym">✓</div><b>Promote to<br>Staging / Production</b><span>All gates pass</span></div><div class="outcome red"><div class="sym">×</div><b>Block<br>Release</b><span>Gate failed</span></div><div class="outcome orange"><div class="sym">!</div><b>Human Review<br>Required</b><span>Manual decision</span></div></div>
+  </div></section>
+
+  <section class="panel obs"><div class="panel-inner">
+    <div class="title-row"><span class="badge blue">TEL</span><h2 class="section-title">Observability &amp; Telemetry</h2></div>
+    <div class="obs-grid">
+      <div class="obs-card"><span class="mini">LOG</span><b>Structured<br>Logs</b><span>JSON events<br>errors + metrics</span></div>
+      <div class="obs-card"><span class="mini">TRC</span><b>Distributed<br>Traces</b><span>request spans<br>OpenTelemetry</span></div>
+      <div class="obs-card"><span class="mini">ID</span><b>Query /<br>Session IDs</b><span>trace correlation<br>user sessions</span></div>
+      <div class="obs-card"><span class="mini">LAT</span><b>Latency<br>Breakdown</b><span>pipeline timing<br>p50 / p95 / p99</span></div>
+      <div class="obs-card"><span class="mini">TOK</span><b>Token Usage<br>&amp; Cost</b><span>tokens + models<br>cost attribution</span></div>
+      <div class="obs-card"><span class="mini">RET</span><b>Retrieval<br>Diagnostics</b><span>chunks, scores<br>recall signals</span></div>
+      <div class="obs-card"><span class="mini">ERR</span><b>Error<br>Taxonomy</b><span>timeouts<br>service failures</span></div>
+      <div class="obs-card"><span class="mini">HAL</span><b>Hallucination<br>Flags</b><span>ungrounded<br>claim markers</span></div>
+      <div class="obs-card"><span class="mini">DB</span><b>Dashboards<br>&amp; Alerts</b><span>SLI / SLO<br>release alerts</span></div>
+    </div>
+  </div></section>
+
+  <section class="panel storage"><div class="panel-inner">
+    <div class="title-row"><span class="badge teal">REG</span><h2 class="section-title">Storage, Registry &amp; Audit</h2></div>
+    <div class="store-grid">
+      <div class="store-card"><span class="mini">EXP</span><b>Experiment Registry</b><span>runs + params</span></div>
+      <div class="store-card"><span class="mini">PRM</span><b>Prompt Registry</b><span>templates + vars</span></div>
+      <div class="store-card"><span class="mini">DAT</span><b>Dataset Versioning</b><span>golden + replay</span></div>
+      <div class="store-card"><span class="mini">HIS</span><b>Evaluation History</b><span>time-series scores</span></div>
+      <div class="store-card"><span class="mini">BEN</span><b>Benchmark Results</b><span>scorecards</span></div>
+      <div class="store-card"><span class="mini">AUD</span><b>Audit Log</b><span>immutable events</span></div>
+      <div class="store-card"><span class="mini">MOD</span><b>Model / Retriever Metadata</b><span>lineage + versions</span></div>
+      <div class="store-card"><span class="mini">OBJ</span><b>Object Storage / PostgreSQL</b><span>artifacts + tables</span></div>
+    </div>
+    <div class="caption">Immutable records • Versioned artifacts • Queryable history</div>
+  </div></section>
+
+  <div class="panel feedback"><div class="loop">↻</div><div><b>Feedback Loop: Production Signals &amp; User Feedback</b><span>Feed back into datasets, benchmarks &amp; rules</span></div></div>
+
+  <section class="panel legend"><div class="panel-inner"><b>Legend</b><div class="legend-row"><span class="line"></span>Data / Control Flow</div><div class="legend-row"><span class="line dashed"></span>Instrumentation / Monitoring</div><div class="legend-row"><span class="line purple"></span>Decisions / Gates</div><div class="legend-row"><span class="line dashed navy"></span>Feedback Loop</div></div></section>
+
+  <section class="panel governance"><div class="panel-inner"><div class="g-title">Governance Controls (Guardrails)</div><div class="gov-grid">
+    <div class="gov"><span class="mini">1</span><b>RBAC</b><span>role-based access</span></div><div class="gov"><span class="mini">2</span><b>PII Redaction</b><span>masking + minimization</span></div><div class="gov"><span class="mini">3</span><b>Auditability</b><span>who / what / when</span></div><div class="gov"><span class="mini">4</span><b>Reproducibility</b><span>versioned artifacts</span></div><div class="gov"><span class="mini">5</span><b>Human-in-the-Loop</b><span>manual review</span></div><div class="gov"><span class="mini">6</span><b>Secure Configs</b><span>secrets + policies</span></div><div class="gov"><span class="mini">7</span><b>Encrypted Data</b><span>at-rest + in-transit</span></div>
+  </div></div></section>
+
+  <section class="panel why"><div class="panel-inner"><div class="w-title">★ Why It Matters</div><div class="why-grid"><div class="why-card"><span class="mini">QUA</span><b>Higher<br>Answer Quality</b></div><div class="why-card"><span class="mini">RIS</span><b>Lower<br>Hallucination Risk</b></div><div class="why-card"><span class="mini">DEB</span><b>Faster<br>Debugging</b></div><div class="why-card"><span class="mini">ARA</span><b>Safer Arabic<br>Responses</b></div><div class="why-card"><span class="mini">REL</span><b>Release<br>Confidence</b></div></div></div></section>
+
+  <div class="footer">Portfolio-ready visual: exact 10-stage RAG pipeline • evaluation suites • observability • audit lineage • release gates</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Local environments
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Runtime logs
+*.log
+
+# Generated local-only report state
+reports/evaluation_history.sqlite
+reports/feedback_events.jsonl
+
+# Keep portfolio sample reports under reports/*.json and reports/*.md tracked intentionally.

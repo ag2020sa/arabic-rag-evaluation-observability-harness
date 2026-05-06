@@ -1,0 +1,38 @@
+# Default quality gates for the MVP. Tune after collecting real production traces.
+retrieval:
+  precision_at_k_min: 0.50
+  recall_at_k_min: 0.60
+  mrr_min: 0.50
+  ndcg_min: 0.50
+  hit_rate_at_k_min: 0.75
+
+generation:
+  answer_relevance_min: 0.55
+  groundedness_min: 0.55
+  completeness_min: 0.50
+  must_include_coverage_min: 0.60
+
+citations:
+  source_match_min: 0.75
+  citation_coverage_min: 0.70
+  citation_count_min: 1
+
+arabic_quality:
+  arabic_ratio_min: 0.60
+  readability_min: 0.40
+  terminology_consistency_min: 0.50
+
+safety:
+  prompt_injection_detected_max: 0
+  jailbreak_detected_max: 0
+  pii_leakage_detected_max: 0
+  policy_violation_detected_max: 0
+
+operational:
+  latency_ms_p95_max: 7000
+  average_cost_usd_max: 0.050
+
+release:
+  min_cases_required: 3
+  overall_pass_rate_min: 0.75
+  require_human_review_when_any_critical_fails: true

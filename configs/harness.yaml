@@ -1,0 +1,37 @@
+project:
+  name: arabic-rag-evaluation-observability-harness
+  domain: Arabic enterprise RAG
+  primary_use_case: Saudi HR and labor-law compliance
+
+runtime:
+  default_adapter: local_mock
+  dataset_path: data/golden/arabic_hr_golden_set.jsonl
+  replay_path: data/replay/production_replay_samples.jsonl
+  thresholds_path: configs/thresholds.yaml
+  output_dir: reports
+
+observability:
+  enable_structured_logs: true
+  enable_tracing: true
+  enable_prometheus_metrics: true
+  trace_attributes:
+    - run_id
+    - case_id
+    - query_hash
+    - prompt_version
+    - model_name
+    - retriever_version
+    - latency_ms
+    - retrieved_chunk_count
+    - citation_count
+
+registry:
+  storage_backend: sqlite
+  sqlite_db_path: reports/evaluation_history.sqlite
+  immutable_audit: true
+
+safety:
+  pii_redaction_enabled: true
+  prompt_injection_checks_enabled: true
+  jailbreak_checks_enabled: true
+  human_review_on_high_risk: true
