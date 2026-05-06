@@ -1,8 +1,16 @@
 # Portfolio Snippets
 
+Portfolio page:
+
+`https://ag2020sa.github.io/arabic-rag-evaluation-observability-harness/`
+
 Repository:
 
 `https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness`
+
+Release:
+
+`https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness/releases/tag/v1.0.0`
 
 ## One-Line Project Summary
 
@@ -45,6 +53,8 @@ The project includes:
 - Streamlit release dashboard
 - GitHub Actions CI/CD gates
 - explicit decisions: promote, human review, or block
+
+Portfolio page: https://ag2020sa.github.io/arabic-rag-evaluation-observability-harness/
 
 Repo: https://github.com/ag2020sa/arabic-rag-evaluation-observability-harness
 
